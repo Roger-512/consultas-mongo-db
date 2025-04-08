@@ -10,10 +10,11 @@ public class GtController : Controller {
         var db = client.GetDatabase("Inmuebles");
         var collection = db.GetCollection<Inmueble>("RentasVentas");
         var filtroCosto = Builders<Inmueble>.Filter.Gt(x => x.Costo, 100000);
+        var filtroTipo = Builders<Inmueble>.Filter.Eq(x => x.Tipo, "Terreno");
 
         //Muestra todos los que su terreno vale más de $100,000
 
-        var filtroCompuesto = Builders<Inmueble>.Filter.And(filtroCosto);
+        var filtroCompuesto = Builders<Inmueble>.Filter.And(filtroCosto, filtroTipo);
         var lista = collection.Find(filtroCompuesto).ToList();
         return Ok(lista);
     }
@@ -45,4 +46,34 @@ public class GtController : Controller {
         var lista = collection.Find(filtroCompuesto).ToList();
         return Ok(lista);
     }
+
+    [HttpGet("casa-baños")]
+    public IActionResult CasaBaños(){
+        MongoClient client = new MongoClient(CadenasConexion.MongoDB);
+        var db = client.GetDatabase("Inmuebles");
+        var collection = db.GetCollection<Inmueble>("RentasVentas");
+        var filtroBanios = Builders<Inmueble>.Filter.Gt(x => x.Bnios, 2);
+
+        //Muestra todas las casas que cuentan con más de un baño
+
+        var filtroCompuesto = Builders<Inmueble>.Filter.And(filtroBanios);
+        var lista = collection.Find(filtroCompuesto).ToList();
+        return Ok(lista);
+    }
+
+    [HttpGet("casa-metros")]
+    public IActionResult CasaMetros(){
+        MongoClient client = new MongoClient(CadenasConexion.MongoDB);
+        var db = client.GetDatabase("Inmuebles");
+        var collection = db.GetCollection<Inmueble>("RentasVentas");
+        var filtroTerreno = Builders<Inmueble>.Filter.Gt(x => x.MetrosTerreno, 301);
+        var filtroTipo = Builders<Inmueble>.Filter.Eq(x => x.Tipo, "Casa");
+
+        //Muestra todas las casas que tengan más de 300 metros de terreno
+
+        var filtroCompuesto = Builders<Inmueble>.Filter.And(filtroTerreno, filtroTipo);
+        var lista = collection.Find(filtroCompuesto).ToList();
+        return Ok(lista);
+    }
+
 }
