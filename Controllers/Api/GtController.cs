@@ -69,7 +69,7 @@ public class GtController : Controller {
         var filtroTerreno = Builders<Inmueble>.Filter.Gt(x => x.MetrosTerreno, 301);
         var filtroTipo = Builders<Inmueble>.Filter.Eq(x => x.Tipo, "Casa");
 
-        //Muestra todas las casas que tengan más de 300 metros de terreno
+        //Muestra todas las casas que tengan más de 300 metros de terreno. :)
 
         var filtroCompuesto = Builders<Inmueble>.Filter.And(filtroTerreno, filtroTipo);
         var lista = collection.Find(filtroCompuesto).ToList();
